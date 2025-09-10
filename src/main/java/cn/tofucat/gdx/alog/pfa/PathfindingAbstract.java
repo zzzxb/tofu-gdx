@@ -18,16 +18,16 @@ public abstract class PathfindingAbstract implements Pathfinding {
      */
     public Array<Vector2> freePath(Vector2 start, Vector2 goal) {
         Array<Vector2> path = new Array<>();
-        float sx = start.x, sy = start.y, gx = goal.x, gy = goal.y;
         // up 1 down -1 eq 0
-        int v = Float.compare(gy, sy);
+        int vertical = Float.compare(goal.y, start.y);
         // left -1 right 1 eq 0
-        int h = Float.compare(gx, sx);
+        int horizontal = Float.compare(goal.x, start.x);
+        float x = start.x, y = start.y;
         do {
-            sy = sy != gy ? sy + (v * step) : gy;
-            sx = sx != gx ? sx + (h * step) : sx;
-            path.add(new Vector2(sx, sy));
-        } while (sx != gx || sy != gy);
+            y = y != goal.y ? y + (vertical * step) : y;
+            x = x != goal.x ? x + (horizontal * step) : x;
+            path.add(new Vector2(x, y));
+        } while (!path.get(path.size - 1).equals(goal));
         return path;
     }
 }
