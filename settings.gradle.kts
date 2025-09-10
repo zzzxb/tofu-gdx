@@ -1,2 +1,2 @@
-rootProject.name = "tofu_gdx"
+rootProject.name = "tofu-gdx"
 

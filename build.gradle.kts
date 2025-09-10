@@ -1,15 +1,17 @@
 plugins {
-    id("java")
+    id("java-library")
 }
 
 group = "cn.tofucat.gdx"
-version = "1.0.0"
+version = project.properties["gdxVersion"]!!
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
+    api("com.badlogicgames.gdx:gdx:${project.properties["gdxVersion"]}")
+
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
 }
