@@ -2,9 +2,13 @@ package cn.tofucat.gdx;
 
 import cn.tofucat.gdx.alog.pfa.DFS;
 import cn.tofucat.gdx.alog.pfa.PathfindingAbstract;
+import cn.tofucat.gdx.alog.pfa.PathfindingContext;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.util.Optional;
 
 /**
  *
@@ -12,32 +16,25 @@ import org.junit.jupiter.api.Test;
  * 2025/9/10
  */
 public class PathfindingTests {
+    PathfindingAbstract pa = new DFS();
 
     @Test
     public void freePath() {
-        PathfindingAbstract pa = new DFS();
-        Array<Vector2> up = pa.freePath(new Vector2(5, 5), new Vector2(5, 10));
-        System.out.println("up: " + up);
+        boolean zigzag = false;
+        freePath(new Vector2(1, 1), new Vector2(1, 2), zigzag, "[(1.0,2.0)]");
+        freePath(new Vector2(1, 1), new Vector2(1, 0), zigzag, "[(1.0,0.0)]");
+        freePath(new Vector2(1, 1), new Vector2(0, 1), zigzag, "[(0.0,1.0)]");
+        freePath(new Vector2(1, 1), new Vector2(2, 1), zigzag, "[(2.0,1.0)]");
+        freePath(new Vector2(1, 1), new Vector2(0, 2), zigzag, "[(0.0,2.0)]");
+        freePath(new Vector2(1, 1), new Vector2(0, 0), zigzag, "[(0.0,0.0)]");
+        freePath(new Vector2(1, 1), new Vector2(2, 2), zigzag, "[(2.0,2.0)]");
+        freePath(new Vector2(1, 1), new Vector2(2, 0), zigzag, "[(2.0,0.0)]");
+    }
 
-        Array<Vector2> down = pa.freePath(new Vector2(5, 5), new Vector2(5, 0));
-        System.out.println("down: " + down);
-
-        Array<Vector2> left = pa.freePath(new Vector2(5, 5), new Vector2(0, 5));
-        System.out.println("left: " + left);
-
-        Array<Vector2> right = pa.freePath(new Vector2(5, 5), new Vector2(10, 5));
-        System.out.println("right:" + right);
-
-        Array<Vector2> lu = pa.freePath(new Vector2(5, 5), new Vector2(0, 10));
-        System.out.println("left up:" + lu);
-
-        Array<Vector2> ld = pa.freePath(new Vector2(5, 5), new Vector2(0, 0));
-        System.out.println("left down:" + ld);
-
-        Array<Vector2> ru = pa.freePath(new Vector2(5, 5), new Vector2(10, 10));
-        System.out.println("right up:" + ru);
-
-        Array<Vector2> rd = pa.freePath(new Vector2(5, 5), new Vector2(10, 0));
-        System.out.println("right down:" + rd);
+    private void freePath(Vector2 s, Vector2 g, boolean zigzag, String result) {
+        PathfindingContext context = new PathfindingContext(s, g, zigzag);
+        Optional<Array<Vector2>> optional = pa.freePath(context);
+        System.out.format("> start: %s goal: %s path: %s\n", s, g, optional.orElseThrow());
+        Assertions.assertEquals(result, optional.get().toString());
     }
 }
