@@ -38,7 +38,7 @@ public abstract class PathfindingAbstract implements Pathfinding {
             else
                 x = x != context.getGoal().x ? x + (horizontal * step) : x;
             path.add(new Vector2(x, y));
-        } while (!context.getGoal().equals(path.get(path.size - 1)));
+        } while (!context.getGoal().equals(path.peek()));
         return path;
     }
 
@@ -49,7 +49,20 @@ public abstract class PathfindingAbstract implements Pathfinding {
             y = y != context.getGoal().y ? y + (vertical * step) : y;
             x = x != context.getGoal().x ? x + (horizontal * step) : x;
             path.add(new Vector2(x, y));
-        } while (!context.getGoal().equals(path.get(path.size - 1)));
+        } while (!context.getGoal().equals(path.peek()));
         return path;
     }
+
+    /**
+     * 之字线 生成4个方向
+     * 斜直线 生成8个方向
+     * @param zigzag true 走之字线, false 走斜直线
+     */
+    protected Array<Direction> getAdjacentPoints(boolean zigzag) {
+        Array<Direction> directions = Array.with(Direction.UP, Direction.DOWN, cn.tofucat.gdx.alog.pfa.Direction.LEFT, cn.tofucat.gdx.alog.pfa.Direction.RIGHT);
+        if(zigzag) directions.add(Direction.LEFT_UP, Direction.LEFT_DOWN, Direction.RIGHT_UP, Direction.RIGHT_DOWN);
+        return directions;
+
+    }
+
 }
