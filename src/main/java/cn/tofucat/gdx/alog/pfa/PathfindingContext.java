@@ -12,12 +12,14 @@ public class PathfindingContext {
     private Vector2 start;
     private Vector2 goal;
     private Array<Vector2> barriers;
-    private boolean zigzag;
+    private boolean zigzag = true;
+
+    public PathfindingContext(Vector2 start, Vector2 goal) {
+        this(start, goal, true);
+    }
 
     public PathfindingContext(Vector2 start, Vector2 goal, boolean zigzag) {
-        this.goal = goal;
-        this.start = start;
-        this.zigzag = zigzag;
+        this(start, goal, new Array<>(), zigzag);
     }
 
     public PathfindingContext(Vector2 start, Vector2 goal, Array<Vector2> barriers, boolean zigzag) {

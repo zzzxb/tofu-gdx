@@ -2,6 +2,7 @@ package cn.tofucat.gdx.alog.pfa;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import org.w3c.dom.ls.LSOutput;
 
 import java.util.Optional;
 
@@ -17,28 +18,35 @@ public class DFS extends PathfindingAbstract {
         if (context.getStart().equals(context.getGoal())) return Optional.empty();
 
         Array<Node> nodes = new Array<>();
-        Node nowPoint = new Node(context.getStart(), getAdjacentPoints(context.isZigzag()));
+        Node nowNode = new Node(context.getStart(), DEFAULT_EIGHT_DIRECTION);
         do {
-            Node node = nextNode(nowPoint, context.getGoal());
-            if (context.getBarriers().contains(node.getPosition(), false)) {
-                nowPoint.getDirections().removeIndex(0);
-                if (nowPoint.getDirections().isEmpty()) {
-                    nowPoint = rollback(nodes);
+            System.out.println(nodes.size + " - " + nowNode.getPosition());
+            Node node = nextNode(nowNode, context.getGoal(), context.isZigzag());
+            if (context.getBarriers().contains(node.getPosition(), false) ||
+                    nodes.contains(node, false) || node.getPosition().equals(context.getStart())) {
+                if (nowNode.getDirections().isEmpty()) {
+                    nowNode = rollback(nodes);
+                    System.out.println("滚了吧");
                 }
                 continue;
             }
-            nodes.add(nowPoint = node);
+            nowNode = node;
+            nodes.add(node);
         } while (!context.getGoal().equals(nodes.peek().getPosition()));
 
         return Optional.empty();
     }
 
-    private Node nextNode(Node node, Vector2 goal) {
-        // TODO
-        return null;
+    private Node nextNode(Node node, Vector2 goal, boolean zigzag) {
+        Vector2 start = node.getPosition().cpy();
+        Direction direction = node.getDirections().removeIndex(0);
+        Vector2 v2 = move(start, goal, direction);
+        return new Node(v2, DEFAULT_EIGHT_DIRECTION);
     }
 
     private Node rollback(Array<Node> nodes) {
-        return nodes.removeIndex(nodes.size - 1);
+        // 丢弃这个当前节点, 回滚到当前节点的上个节点
+        nodes.pop();
+        return nodes.peek();
     }
 }

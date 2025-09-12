@@ -8,7 +8,8 @@ public class Node {
     private Array<Direction> directions;
 
     public Node(Vector2 position, Array<Direction> directions) {
-        this.position = position;
+        this.position = position.cpy();
+        this.directions = new Array<>(directions);
     }
 
     public Vector2 getPosition() {
@@ -29,5 +30,13 @@ public class Node {
 
     public Node cpy() {
         return new Node(this.position.cpy(), new Array<>());
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Node node)) {
+            return false;
+        }
+        return node.position != null && node.position.equals(position);
     }
 }
