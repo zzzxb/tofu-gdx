@@ -7,6 +7,10 @@ public class Node {
     private Vector2 position;
     private Array<Direction> directions;
 
+    public Node(Vector2 position) {
+        this.position = position;
+    }
+
     public Node(Vector2 position, Array<Direction> directions) {
         this.position = position.cpy();
         this.directions = new Array<>(directions);
@@ -38,5 +42,10 @@ public class Node {
             return false;
         }
         return node.position != null && node.position.equals(position);
+    }
+
+    @Override
+    public String toString() {
+        return position.toString();
     }
 }

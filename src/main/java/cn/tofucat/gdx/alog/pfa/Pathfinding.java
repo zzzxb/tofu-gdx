@@ -12,5 +12,15 @@ import java.util.Optional;
  */
 public interface Pathfinding {
 
-    Optional<Array<Vector2>> find(PathfindingContext context);
+    Optional<Array<Node>> find(PathfindingContext context);
+
+    /**
+     * @param horizontal left -1 right 1 eq 0
+     */
+    void moveX(Vector2 start, Vector2 goal, int horizontal);
+
+    /**
+     * @param vertical up 1 down -1 eq 0
+     */
+    void moveY(Vector2 start, Vector2 goal, int vertical);
 }
